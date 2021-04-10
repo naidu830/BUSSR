@@ -1,0 +1,80 @@
+
+service: bussr
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+
+plugins:
+  - serverless-offline
+
+custom:
+  # serverless offline plugin setup
+  serverless-offline:
+    httpPort: 4000  
+
+functions:
+  createTicket:
+    handler: handler.createTicket
+    events:
+      - http:
+         path: create
+         method: post
+
+  getTickets:
+    handler: handler.getTickets
+    events:
+      - http:
+          path: getAll
+          method: get
+
+  getTicket:
+    handler: handler.getTicket
+    events:
+      - http:
+          path: getOne/{id}
+          request:
+            parameters:
+              paths:
+                id: true
+          method: get
+
+  updateTicket:
+    handler: handler.updateTicket
+    events:
+      - http:
+          path: update/{id}
+          request:
+            parameters:
+              paths:
+                id: true
+          method: put
+
+  deleteTicket:
+    handler: handler.deleteTicket
+    events:
+      - http:
+          path: delete/{id}
+          request:
+            parameters:
+              paths:
+                id: true
+          method: delete
+
+  get_monthly_profit:
+    handler: handler.get_monthly_profit
+    events:
+      - http:
+          path: monthly_profit
+          method: post
+
+
